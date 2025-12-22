@@ -104,12 +104,6 @@ export default function LoginPage() {
             Forgot your password?
           </a>
         </div>
-
-        <div className="mt-6 rounded-lg bg-muted/50 p-4 text-sm">
-          <p className="font-medium">Demo Credentials:</p>
-          <p className="text-muted-foreground">Email: esh@gmail.com</p>
-          <p className="text-muted-foreground">Password: admin123</p>
-        </div>
       </Card>
     </div>
   )

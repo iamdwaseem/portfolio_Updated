@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/auth-context"
-import { LayoutDashboard, User, FolderGit2, Award, Calendar, Wrench, LogOut, Menu, X, Home } from "lucide-react"
+import { LayoutDashboard, User, FolderGit2, Award, Calendar, Wrench, LogOut, Menu, X, Home, Mail } from "lucide-react"
 
 interface AdminSidebarProps {
   isOpen: boolean
@@ -23,6 +23,7 @@ export function AdminSidebar({ isOpen, onToggle }: AdminSidebarProps) {
     { href: "/admin/skills", label: "Skills", icon: Award },
     { href: "/admin/timeline", label: "Timeline", icon: Calendar },
     { href: "/admin/tools", label: "Tools", icon: Wrench },
+    { href: "/admin/messages", label: "Messages", icon: Mail },
   ]
 
   const handleLogout = async () => {

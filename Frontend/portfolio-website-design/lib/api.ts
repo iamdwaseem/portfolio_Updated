@@ -71,7 +71,11 @@ export async function fetchPortfolio(): Promise<PortfolioData> {
 }
 
 export async function sendMessage(data: { name: string; email: string; message: string }): Promise<void> {
-  await apiJsonPost("/message/send", data)
+  await apiJsonPost("/message/send", {
+    senderName: data.name,
+    subject: `Message from ${data.name}`,
+    message: data.message,
+  })
 }
 
 export async function updateUser(data: Partial<PortfolioData["user"]>): Promise<void> {

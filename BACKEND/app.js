@@ -32,7 +32,10 @@ app.get("/health", (req, res) => {
 const allowedOrigins = [
   process.env.PORTFOLIO_URI,
   process.env.DASHBOARD_URI,
-];
+]
+  .filter(Boolean)
+  .flatMap(uri => uri.split(',').map(u => u.trim()))
+  .filter(Boolean);
 
 app.use(
   cors({

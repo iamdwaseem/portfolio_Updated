@@ -75,11 +75,21 @@ export const deleteProject = catchAsyncErrors(async (req, res, next) => {
   if (!project) {
     return next(new ErrorHandler("project Not Found", 404));
   }
-  await cloudinary.uploader.destroy(project.projectBanner.public_id);
+  
+  // Only delete from Cloudinary if it's not a placeholder
+  if (project.projectBanner?.public_id && project.projectBanner.public_id !== "placeholder") {
+    try {
+      await cloudinary.uploader.destroy(project.projectBanner.public_id);
+    } catch (error) {
+      console.error("Cloudinary deletion error:", error);
+      // Continue with project deletion even if Cloudinary fails
+    }
+  }
+  
   await project.deleteOne();
   res.status(200).json({
     success: true,
-    message: "Application Deleted Successfully",
+    message: "Project Deleted Successfully",
   });
 });
 export const updateProject = catchAsyncErrors(async (req, res, next) => {

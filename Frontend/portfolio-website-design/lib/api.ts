@@ -7,6 +7,8 @@ type ApiSkillsResponse = { success: boolean; skills: any[] }
 type ApiTimelineResponse = { success: boolean; timelines: any[] }
 type ApiApplicationsResponse = { success: boolean; applications: any[] }
 
+const STATIC_PORTFOLIO_URL = "/portfolio.json"
+
 export async function fetchPortfolio(): Promise<PortfolioData> {
   const [userRes, projectsRes, skillsRes, timelinesRes, applicationsRes] = await Promise.all([
     apiGet<ApiUserResponse>("/user/me/portfolio"),
@@ -16,6 +18,7 @@ export async function fetchPortfolio(): Promise<PortfolioData> {
     apiGet<ApiApplicationsResponse>("/softwareapplication/getall"),
   ])
 
+  console.log("✅ Backend sync successful, switching to live data.")
   return {
     user: {
       id: userRes.user._id,
@@ -23,11 +26,11 @@ export async function fetchPortfolio(): Promise<PortfolioData> {
       aboutMe: userRes.user.aboutMe,
       email: userRes.user.email,
       phone: userRes.user.phone,
-      avatar: userRes.user.avatar?.url,
-      resume: userRes.user.resume?.url,
-      githubUrl: userRes.user.githubURL,
-      linkedinUrl: userRes.user.linkedinURL,
-      portfolioUrl: userRes.user.portfolioURL,
+      avatar: userRes.user.avatar?.url || "",
+      resume: userRes.user.resume?.url || "",
+      githubUrl: userRes.user.githubURL || "",
+      linkedinUrl: userRes.user.linkedinURL || "",
+      portfolioUrl: userRes.user.portfolioURL || "",
     },
     projects: projectsRes.projects.map((p) => ({
       id: p._id,
@@ -44,19 +47,19 @@ export async function fetchPortfolio(): Promise<PortfolioData> {
           : [],
       githubLink: p.gitRepoLink,
       liveLink: p.projectLink,
-      bannerImage: p.projectBanner?.url,
+      bannerImage: p.projectBanner?.url || "",
       deployed: p.deployed || "Yes",
     })),
     skills: skillsRes.skills.map((s) => ({
       id: s._id,
       name: s.title,
       proficiency: Number(s.proficiencyLevel) || 0,
-      icon: s.svg?.url,
+      icon: s.svg?.url || "",
     })),
     applications: applicationsRes.applications.map((a) => ({
       id: a._id,
       name: a.name,
-      icon: a.svg?.url,
+      icon: a.svg?.url || "",
     })),
     timelines: timelinesRes.timelines.map((t) => ({
       id: t._id,
@@ -66,6 +69,72 @@ export async function fetchPortfolio(): Promise<PortfolioData> {
       cgpa: t.cgpa ?? "",
       fromDate: t.timeline?.from ? new Date(t.timeline.from).toISOString().slice(0, 7) : "",
       toDate: t.timeline?.to ? new Date(t.timeline.to).toISOString().slice(0, 7) : "",
+    })),
+  }
+}
+
+export async function fetchStaticPortfolio(): Promise<PortfolioData> {
+  let staticData: any = null
+  try {
+    const staticResponse = await fetch(STATIC_PORTFOLIO_URL)
+    if (staticResponse.ok) {
+      staticData = await staticResponse.json()
+    }
+  } catch (error) {
+    console.warn("Failed to fetch static portfolio data:", error)
+  }
+
+  return {
+    user: {
+      id: staticData?.profile?.id || "static-user",
+      fullName: staticData?.profile?.fullName || "Mohammed Waseemuddin",
+      aboutMe: staticData?.profile?.bio || "",
+      email: staticData?.profile?.email || "",
+      phone: staticData?.profile?.phone || "",
+      avatar: "",
+      resume: "",
+      githubUrl: staticData?.profile?.github || "",
+      linkedinUrl: staticData?.profile?.linkedin || "",
+      portfolioUrl: "",
+    },
+    projects: (staticData?.projects || []).map((p: any, idx: number) => ({
+      id: p.id || `static-proj-${idx}`,
+      title: p.title || "",
+      description: p.description || "",
+      stack: p.category || "Full Stack",
+      technologies: p.techStack || [],
+      githubLink: p.links?.github || "",
+      liveLink: p.links?.live || "",
+      bannerImage: "",
+      deployed: p.status === "Completed" ? "Yes" : "No",
+    })),
+    skills: [
+      ...(staticData?.skills?.languages || []).map((s: string, idx: number) => ({
+        id: `static-lang-${idx}`,
+        name: s,
+        proficiency: 85,
+        icon: `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${s.toLowerCase().replace(/[#+]/g, (m) => (m === "#" ? "sharp" : "plus"))}/${s.toLowerCase().replace(/[#+]/g, (m) => (m === "#" ? "sharp" : "plus"))}-original.svg`,
+      })),
+      ...(staticData?.skills?.frameworks || []).map((s: string, idx: number) => ({
+        id: `static-fw-${idx}`,
+        name: s,
+        proficiency: 80,
+        icon: `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${s.toLowerCase().replace(".", "")}/${s.toLowerCase().replace(".", "")}-original.svg`,
+      })),
+    ],
+    applications: (staticData?.skills?.databasesAndTools || []).map((s: string, idx: number) => ({
+      id: `static-app-${idx}`,
+      name: s,
+      icon: `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${s.toLowerCase()}/${s.toLowerCase()}-original.svg`,
+    })),
+    timelines: (staticData?.education || []).map((e: any, idx: number) => ({
+      id: `static-edu-${idx}`,
+      title: e.institution || "",
+      description: e.degree || "",
+      fromDate: e.startYear || "",
+      toDate: e.endYear || "",
+      educationYear: `${e.startYear} - ${e.endYear}`,
+      cgpa: e.cgpa || "",
     })),
   }
 }

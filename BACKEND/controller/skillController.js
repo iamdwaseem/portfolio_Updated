@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Skill } from "../models/skillSchema.js";
 import { v2 as cloudinary } from "cloudinary";
+import { triggerPortfolioExport } from "./portfolioExportController.js";
 
 export const addSkill = catchAsyncErrors(async (req, res, next) => {
   const { svg: svgFile } = req.files || {};
@@ -44,6 +45,7 @@ export const addSkill = catchAsyncErrors(async (req, res, next) => {
     svg: svgData,
   });
 
+  triggerPortfolioExport(req.user._id);
   res.status(201).json({
     success: true,
     message: "Skill Added Successfully",
@@ -58,6 +60,7 @@ export const deleteSkill = catchAsyncErrors(async (req, res, next) => {
   }
   await cloudinary.uploader.destroy(skills.svg.public_id);
   await skills.deleteOne();
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "skills Deleted Successfully",
@@ -114,6 +117,7 @@ export const updateSkill = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
   });
 
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Skill Updated Successfully",

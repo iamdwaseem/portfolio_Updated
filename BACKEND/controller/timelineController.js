@@ -1,6 +1,7 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Timeline } from "../models/timelineSchema.js";
+import { triggerPortfolioExport } from "./portfolioExportController.js";
 
 export const postTimeLine = catchAsyncErrors(async (req, res, next) => {
   const { title, description, fromDate, toDate, educationYear, cgpa } = req.body;
@@ -21,6 +22,7 @@ export const postTimeLine = catchAsyncErrors(async (req, res, next) => {
     timeline: { from: fromDateObj, to: toDateObj },
   });
   
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Timeline added",
@@ -35,6 +37,7 @@ export const deleteTimeline = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Timeline not found!", 404));
   }
   await timeline.deleteOne();
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Timeline Deleted",
@@ -70,6 +73,7 @@ export const updateTimeline = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
   });
 
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Timeline Updated",

@@ -11,12 +11,28 @@ import { useState } from "react"
 const geist = Geist({ subsets: ["latin"] })
 const geistMono = Geist_Mono({ subsets: ["latin"] })
 
+import { ThemeProvider } from "@/components/theme-provider"
+
 function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 60 * 6, // 6 hours
+            gcTime: 1000 * 60 * 60 * 24, // 24 hours
+            retry: 1,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  )
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>{children}</AuthProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <AuthProvider>{children}</AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }

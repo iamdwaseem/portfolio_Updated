@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { generateToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto";
+import { triggerPortfolioExport } from "./portfolioExportController.js";
 export const register = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return next(new ErrorHandler("Avatar and Resume Are Required!", 400));
@@ -67,6 +68,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     resetPasswordToken,
     resetPasswordExpire,
   });
+  triggerPortfolioExport(user._id);
   generateToken(user, "User Registered", 201, res);
 });
 
@@ -165,6 +167,7 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
     useFindAndModify: false,
   });
+  triggerPortfolioExport(user._id);
   res.status(200).json({
     success: true,
     message: "Profile updated!",

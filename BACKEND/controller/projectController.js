@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Project } from "../models/projectSchema.js";
 import { v2 as cloudinary } from "cloudinary";
+import { triggerPortfolioExport } from "./portfolioExportController.js";
 
 export const addNewProject = catchAsyncErrors(async (req, res, next) => {
   const { projectBanner: bannerFile } = req.files || {};
@@ -63,6 +64,7 @@ export const addNewProject = catchAsyncErrors(async (req, res, next) => {
     deployed,
     projectBanner: projectBannerData,
   });
+  triggerPortfolioExport(req.user._id);
   res.status(201).json({
     success: true,
     message: "New Project added successfully",
@@ -150,6 +152,7 @@ export const updateProject = catchAsyncErrors(async (req, res, next) => {
     success: true,
     message: "Project Updated Successfully",
   });
+  triggerPortfolioExport(req.user._id);
 });
 export const getSingleProject = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;

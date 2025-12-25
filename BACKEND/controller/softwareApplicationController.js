@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js";
 import { SoftwareApplication } from "../models/softwareApplicationSchema.js";
 import { v2 as cloudinary } from "cloudinary";
+import { triggerPortfolioExport } from "./portfolioExportController.js";
 export const addNewApplication = catchAsyncErrors(async (req, res, next) => {
   const { svg: svgFile } = req.files || {};
   const { name, svg: svgUrl } = req.body;
@@ -42,6 +43,7 @@ export const addNewApplication = catchAsyncErrors(async (req, res, next) => {
     svg: svgData,
   });
 
+  triggerPortfolioExport(req.user._id);
   res.status(201).json({
     success: true,
     message: "Software Application Added Successfully",
@@ -57,6 +59,7 @@ export const deleteApplication = catchAsyncErrors(async (req, res, next) => {
   }
   await cloudinary.uploader.destroy(application.svg.public_id);
   await application.deleteOne();
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Application Deleted Successfully",
@@ -119,6 +122,7 @@ export const updateApplication = catchAsyncErrors(async (req, res, next) => {
     }
   );
 
+  triggerPortfolioExport(req.user._id);
   res.status(200).json({
     success: true,
     message: "Application Updated Successfully",

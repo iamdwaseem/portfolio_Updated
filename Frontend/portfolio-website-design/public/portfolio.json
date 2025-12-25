@@ -1,0 +1,119 @@
+{
+  "profile": {
+    "fullName": "Mohammed Waseemuddin",
+    "email": "iamdwaseem@gmail.com",
+    "phone": "+91-9491766085",
+    "github": "https://github.com/iamdwaseem",
+    "linkedin": "https://www.linkedin.com/in/iamdwaseem",
+    "headline": "Computer Science Engineering Student | Full Stack Developer",
+    "bio": "Computer Science Engineering student with hands-on experience in building full-stack web applications using MERN and Next.js. Strong foundation in backend systems, authentication, databases, and modern frontend frameworks. Passionate about scalable systems, problem-solving, and building real-world products.",
+    "location": "Hyderabad, India"
+  },
+
+  "education": [
+    {
+      "institution": "VNR Vignana Jyothi Institute of Engineering and Technology",
+      "degree": "Bachelor of Engineering",
+      "field": "Computer Science and Engineering",
+      "startYear": "2024",
+      "endYear": "2027",
+      "cgpa": "7.6"
+    },
+    {
+      "institution": "VMR Pradeep Kumar Institute of Engineering and Technology",
+      "degree": "Diploma",
+      "field": "Computer Engineering",
+      "startYear": "2021",
+      "endYear": "2024",
+      "cgpa": "8.56"
+    }
+  ],
+
+  "projects": [
+    {
+      "title": "Payment Wallet System (Paytm Clone)",
+      "description": "A peer-to-peer digital wallet system enabling secure money transfers between users.",
+      "techStack": ["MongoDB", "Express.js", "React", "Node.js", "JWT"],
+      "features": [
+        "Secure peer-to-peer money transfers",
+        "JWT-based authentication and authorization",
+        "User balance management",
+        "Protected backend APIs"
+      ],
+      "category": "Full Stack",
+      "status": "Completed",
+      "links": {
+        "github": "",
+        "live": ""
+      }
+    },
+    {
+      "title": "Eventify – Event Discovery & Ticketing Platform",
+      "description": "A full-fledged event discovery and ticketing platform with admin controls and QR-based ticket verification.",
+      "techStack": ["Next.js 16", "TypeScript", "Supabase", "PostgreSQL", "PayPal"],
+      "features": [
+        "Event discovery and ticket purchasing",
+        "Supabase SSR authentication",
+        "PayPal Checkout integration",
+        "Admin dashboard with role-based access",
+        "QR code ticket generation and verification",
+        "Gift ticket transfers and redeem codes"
+      ],
+      "category": "Full Stack",
+      "status": "Completed",
+      "links": {
+        "github": "",
+        "live": ""
+      }
+    },
+    {
+      "title": "NextStep – AI-Powered Career Guidance Platform",
+      "description": "An AI-based career guidance web application providing personalized career recommendations.",
+      "techStack": ["React", "TypeScript", "Vite", "Supabase", "LLM APIs"],
+      "features": [
+        "Aptitude-based career recommendations",
+        "Career clusters, pathways, and roadmaps",
+        "Multilingual AI chat assistant (English, Hindi, Telugu)",
+        "Course and college explorer with filters",
+        "Responsive and intuitive UI"
+      ],
+      "category": "AI / Web",
+      "status": "Completed",
+      "links": {
+        "github": "",
+        "live": ""
+      }
+    },
+    {
+      "title": "Fake News Detection System",
+      "description": "A machine learning system to classify news articles as real or fake using NLP techniques.",
+      "techStack": ["Python", "NLP", "Scikit-learn", "Machine Learning"],
+      "features": [
+        "Text preprocessing with tokenization and stop-word removal",
+        "TF-IDF vectorization",
+        "Supervised ML classification models",
+        "Real-time prediction pipeline",
+        "Model evaluation for accuracy"
+      ],
+      "category": "Machine Learning",
+      "status": "Completed",
+      "links": {
+        "github": "",
+        "live": ""
+      }
+    }
+  ],
+
+  "skills": {
+    "languages": ["C", "C++", "Python", "JavaScript", "Java"],
+    "frameworks": ["React", "Next.js", "Node.js", "Express.js", "Tailwind CSS", "Bootstrap"],
+    "databasesAndTools": ["MongoDB", "MySQL", "Supabase", "Git", "GitHub"]
+  },
+
+  "achievements": [
+    "Ranked 9th out of 7300 teams in TuteDude Hackathon",
+    "Participated in Hackman V7 Hackathon",
+    "Participated in Ambition Hackathon",
+    "Participated in GDGC events"
+  ]
+}

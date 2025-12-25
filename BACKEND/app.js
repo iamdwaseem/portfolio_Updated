@@ -13,6 +13,7 @@ import timelineRouter from "./router/timelineRoutes.js";
 import softwareApplicationRouter from "./router/softwareApplicationRoutes.js";
 import skillRouter from "./router/skillRoutes.js";
 import projectRouter from "./router/projectRoutes.js";
+import portfolioRouter from "./router/portfolioRoutes.js";
 const app = express();
 
 // Database connection
@@ -68,8 +69,6 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-    console.log("Headers:", req.headers);
-    console.log("Body:", req.body);
     next();
   });
 }
@@ -90,6 +89,7 @@ app.use("/api/v1/timeline", timelineRouter);
 app.use("/api/v1/softwareapplication", softwareApplicationRouter);
 app.use("/api/v1/skill", skillRouter);
 app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/portfolio", portfolioRouter);
 
 // Error handling middleware (must come last)
 app.use(errorMiddleware);
